@@ -69,6 +69,13 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
+    sectors: Sector;
+    products: Product;
+    testimonials: Testimonial;
+    'blog-articles': BlogArticle;
+    'library-entries': LibraryEntry;
+    'case-studies': CaseStudy;
+    'news-items': NewsItem;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -78,6 +85,13 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    sectors: SectorsSelect<false> | SectorsSelect<true>;
+    products: ProductsSelect<false> | ProductsSelect<true>;
+    testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
+    'blog-articles': BlogArticlesSelect<false> | BlogArticlesSelect<true>;
+    'library-entries': LibraryEntriesSelect<false> | LibraryEntriesSelect<true>;
+    'case-studies': CaseStudiesSelect<false> | CaseStudiesSelect<true>;
+    'news-items': NewsItemsSelect<false> | NewsItemsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -86,10 +100,10 @@ export interface Config {
   db: {
     defaultIDType: number;
   };
-  fallbackLocale: null;
+  fallbackLocale: ('false' | 'none' | 'null') | false | null | ('fr' | 'ar') | ('fr' | 'ar')[];
   globals: {};
   globalsSelect: {};
-  locale: null;
+  locale: 'fr' | 'ar';
   widgets: {
     collections: CollectionsWidget;
   };
@@ -163,6 +177,167 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sectors".
+ */
+export interface Sector {
+  id: number;
+  slug: string;
+  name: string;
+  description: string;
+  /**
+   * lucide-react icon name (e.g. "Leaf", "Factory")
+   */
+  icon: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "products".
+ */
+export interface Product {
+  id: number;
+  slug: string;
+  division: 'professionnel' | 'grand-public';
+  name: string;
+  shortDescription: string;
+  description: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  applications?: string[] | null;
+  usageInstructions?: string[] | null;
+  advantages?: string[] | null;
+  specs?:
+    | {
+        label: string;
+        value: string;
+        id?: string | null;
+      }[]
+    | null;
+  images?: (number | Media)[] | null;
+  videoPlaceholder?: boolean | null;
+  pdfSpecSheet?: (number | null) | Media;
+  faq?:
+    | {
+        question: string;
+        answer: string;
+        id?: string | null;
+      }[]
+    | null;
+  sectors?: (number | Sector)[] | null;
+  featured?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "testimonials".
+ */
+export interface Testimonial {
+  id: number;
+  authorName: string;
+  authorRole: string;
+  company?: string | null;
+  quote: string;
+  division?: ('professionnel' | 'grand-public') | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "blog-articles".
+ */
+export interface BlogArticle {
+  id: number;
+  slug: string;
+  title: string;
+  excerpt: string;
+  body: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  category: string;
+  tags?: string[] | null;
+  publishedAt: string;
+  author: string;
+  coverImage: number | Media;
+  readingTimeMinutes: number;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "library-entries".
+ */
+export interface LibraryEntry {
+  id: number;
+  slug: string;
+  title: string;
+  summary: string;
+  category: 'etude' | 'article' | 'rapport' | 'norme' | 'innovation';
+  publishedAt: string;
+  file?: (number | null) | Media;
+  tags?: string[] | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "case-studies".
+ */
+export interface CaseStudy {
+  id: number;
+  slug: string;
+  clientName: string;
+  sector: number | Sector;
+  title: string;
+  challenge: string;
+  solution: string;
+  results?: string[] | null;
+  beforeImage?: (number | null) | Media;
+  afterImage?: (number | null) | Media;
+  testimonial?: (number | null) | Testimonial;
+  images?: (number | Media)[] | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "news-items".
+ */
+export interface NewsItem {
+  id: number;
+  title: string;
+  excerpt: string;
+  date: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -192,6 +367,34 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'media';
         value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'sectors';
+        value: number | Sector;
+      } | null)
+    | ({
+        relationTo: 'products';
+        value: number | Product;
+      } | null)
+    | ({
+        relationTo: 'testimonials';
+        value: number | Testimonial;
+      } | null)
+    | ({
+        relationTo: 'blog-articles';
+        value: number | BlogArticle;
+      } | null)
+    | ({
+        relationTo: 'library-entries';
+        value: number | LibraryEntry;
+      } | null)
+    | ({
+        relationTo: 'case-studies';
+        value: number | CaseStudy;
+      } | null)
+    | ({
+        relationTo: 'news-items';
+        value: number | NewsItem;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -274,6 +477,129 @@ export interface MediaSelect<T extends boolean = true> {
   height?: T;
   focalX?: T;
   focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sectors_select".
+ */
+export interface SectorsSelect<T extends boolean = true> {
+  slug?: T;
+  name?: T;
+  description?: T;
+  icon?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "products_select".
+ */
+export interface ProductsSelect<T extends boolean = true> {
+  slug?: T;
+  division?: T;
+  name?: T;
+  shortDescription?: T;
+  description?: T;
+  applications?: T;
+  usageInstructions?: T;
+  advantages?: T;
+  specs?:
+    | T
+    | {
+        label?: T;
+        value?: T;
+        id?: T;
+      };
+  images?: T;
+  videoPlaceholder?: T;
+  pdfSpecSheet?: T;
+  faq?:
+    | T
+    | {
+        question?: T;
+        answer?: T;
+        id?: T;
+      };
+  sectors?: T;
+  featured?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "testimonials_select".
+ */
+export interface TestimonialsSelect<T extends boolean = true> {
+  authorName?: T;
+  authorRole?: T;
+  company?: T;
+  quote?: T;
+  division?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "blog-articles_select".
+ */
+export interface BlogArticlesSelect<T extends boolean = true> {
+  slug?: T;
+  title?: T;
+  excerpt?: T;
+  body?: T;
+  category?: T;
+  tags?: T;
+  publishedAt?: T;
+  author?: T;
+  coverImage?: T;
+  readingTimeMinutes?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "library-entries_select".
+ */
+export interface LibraryEntriesSelect<T extends boolean = true> {
+  slug?: T;
+  title?: T;
+  summary?: T;
+  category?: T;
+  publishedAt?: T;
+  file?: T;
+  tags?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "case-studies_select".
+ */
+export interface CaseStudiesSelect<T extends boolean = true> {
+  slug?: T;
+  clientName?: T;
+  sector?: T;
+  title?: T;
+  challenge?: T;
+  solution?: T;
+  results?: T;
+  beforeImage?: T;
+  afterImage?: T;
+  testimonial?: T;
+  images?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "news-items_select".
+ */
+export interface NewsItemsSelect<T extends boolean = true> {
+  title?: T;
+  excerpt?: T;
+  date?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

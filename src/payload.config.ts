@@ -7,6 +7,13 @@ import sharp from "sharp";
 
 import { Users } from "./collections/Users";
 import { Media } from "./collections/Media";
+import { Sectors } from "./collections/Sectors";
+import { Products } from "./collections/Products";
+import { Testimonials } from "./collections/Testimonials";
+import { BlogArticles } from "./collections/BlogArticles";
+import { LibraryEntries } from "./collections/LibraryEntries";
+import { CaseStudies } from "./collections/CaseStudies";
+import { NewsItems } from "./collections/NewsItems";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -18,7 +25,21 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media],
+  collections: [
+    Users,
+    Media,
+    Sectors,
+    Products,
+    Testimonials,
+    BlogArticles,
+    LibraryEntries,
+    CaseStudies,
+    NewsItems,
+  ],
+  localization: {
+    locales: ["fr", "ar"],
+    defaultLocale: "fr",
+  },
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || "",
   typescript: {
