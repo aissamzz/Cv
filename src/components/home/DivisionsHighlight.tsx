@@ -1,12 +1,15 @@
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ProductCard } from "@/components/products/ProductCard";
-import { productsPro } from "@/data/products-pro";
-import { productsGrandPublic } from "@/data/products-grand-public";
+import { getAllProducts, getFeaturedProducts } from "@/lib/getProduct";
 import type { Dictionary } from "@/i18n/dictionaries";
 
-export function DivisionsHighlight({ dict }: { dict: Dictionary }) {
-  const featuredPro = productsPro.filter((product) => product.featured).slice(0, 3);
+export async function DivisionsHighlight({ dict }: { dict: Dictionary }) {
+  const [featuredProducts, productsGrandPublic] = await Promise.all([
+    getFeaturedProducts(),
+    getAllProducts("grand-public"),
+  ]);
+  const featuredPro = featuredProducts.filter((product) => product.division === "professionnel").slice(0, 3);
   const featuredGrandPublic = productsGrandPublic.slice(0, 3);
 
   return (

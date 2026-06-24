@@ -8,7 +8,7 @@ import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { ProductGrid } from "@/components/products/ProductGrid";
 import { SectorsServedSection } from "@/components/home/SectorsServedSection";
-import { productsPro } from "@/data/products-pro";
+import { getAllProducts } from "@/lib/getProduct";
 import { pageMetadata } from "@/lib/seo";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -26,6 +26,7 @@ export default async function ProfessionnelsPage({
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
   const dict = getDictionary(locale);
+  const productsPro = await getAllProducts("professionnel");
 
   return (
     <>

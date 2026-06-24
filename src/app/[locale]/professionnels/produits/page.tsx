@@ -28,7 +28,8 @@ export default async function ProfessionnelsCataloguePage({
   const dict = getDictionary(locale);
   const { secteur } = await searchParams;
 
-  const products = getAllProducts("professionnel").filter((product) =>
+  const allProducts = await getAllProducts("professionnel");
+  const products = allProducts.filter((product) =>
     secteur ? product.sectors?.includes(secteur) : true
   );
 

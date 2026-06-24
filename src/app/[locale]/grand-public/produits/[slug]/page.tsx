@@ -8,13 +8,13 @@ import { ProductSpecsTable } from "@/components/products/ProductSpecsTable";
 import { ProductFAQ } from "@/components/products/ProductFAQ";
 import { QuickContactForm } from "@/components/products/QuickContactForm";
 import { WhereToBuyBlock } from "@/components/products/WhereToBuyBlock";
-import { productsGrandPublic } from "@/data/products-grand-public";
-import { getProductBySlug } from "@/lib/getProduct";
+import { getAllProducts, getProductBySlug } from "@/lib/getProduct";
 import { pageMetadata } from "@/lib/seo";
 
-export function generateStaticParams() {
+export async function generateStaticParams() {
+  const products = await getAllProducts("grand-public");
   return locales.flatMap((locale) =>
-    productsGrandPublic.map((product) => ({ locale, slug: product.slug }))
+    products.map((product) => ({ locale, slug: product.slug }))
   );
 }
 
@@ -24,7 +24,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const product = getProductBySlug("grand-public", slug);
+  const product = await getProductBySlug("grand-public", slug);
   if (!product) return {};
   return pageMetadata(product.name, product.shortDescription);
 }
@@ -37,7 +37,7 @@ export default async function GrandPublicProductPage({
   const { locale, slug } = await params;
   if (!isLocale(locale)) notFound();
   const dict = getDictionary(locale);
-  const product = getProductBySlug("grand-public", slug);
+  const product = await getProductBySlug("grand-public", slug);
   if (!product) notFound();
 
   return (

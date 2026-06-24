@@ -283,7 +283,7 @@ export interface BlogArticle {
   tags?: string[] | null;
   publishedAt: string;
   author: string;
-  coverImage: number | Media;
+  coverImage?: (number | null) | Media;
   readingTimeMinutes: number;
   updatedAt: string;
   createdAt: string;

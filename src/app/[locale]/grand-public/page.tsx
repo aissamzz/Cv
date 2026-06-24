@@ -7,7 +7,7 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { ProductGrid } from "@/components/products/ProductGrid";
-import { productsGrandPublic } from "@/data/products-grand-public";
+import { getAllProducts } from "@/lib/getProduct";
 import { pageMetadata } from "@/lib/seo";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -25,6 +25,7 @@ export default async function GrandPublicPage({
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
   const dict = getDictionary(locale);
+  const productsGrandPublic = await getAllProducts("grand-public");
 
   return (
     <>

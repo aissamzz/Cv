@@ -23,7 +23,7 @@ export default async function BibliothequeScientifiquePage({
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
   const dict = getDictionary(locale);
-  const entries = getAllLibraryEntries();
+  const entries = await getAllLibraryEntries();
 
   return (
     <>

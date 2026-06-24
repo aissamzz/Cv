@@ -10,7 +10,8 @@
     "lint": "eslint",
     "payload": "payload",
     "generate:importmap": "payload generate:importmap",
-    "generate:types": "payload generate:types"
+    "generate:types": "payload generate:types",
+    "seed": "node --env-file=.env node_modules/.bin/payload run src/seed.ts"
   },
   "dependencies": {
     "@payloadcms/db-postgres": "^3.85.1",

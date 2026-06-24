@@ -5,13 +5,13 @@ import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ArticleContent } from "@/components/blog/ArticleContent";
 import { ArticleCard } from "@/components/blog/ArticleCard";
-import { blogArticles } from "@/data/blog-articles";
-import { getArticleBySlug, getRelatedArticles } from "@/lib/getArticle";
+import { getAllArticles, getArticleBySlug, getRelatedArticles } from "@/lib/getArticle";
 import { pageMetadata } from "@/lib/seo";
 
-export function generateStaticParams() {
+export async function generateStaticParams() {
+  const articles = await getAllArticles();
   return locales.flatMap((locale) =>
-    blogArticles.map((article) => ({ locale, slug: article.slug }))
+    articles.map((article) => ({ locale, slug: article.slug }))
   );
 }
 
@@ -21,7 +21,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const article = getArticleBySlug(slug);
+  const article = await getArticleBySlug(slug);
   if (!article) return {};
   return pageMetadata(article.title, article.excerpt);
 }
@@ -33,9 +33,9 @@ export default async function ArticlePage({
 }) {
   const { locale, slug } = await params;
   if (!isLocale(locale)) notFound();
-  const article = getArticleBySlug(slug);
+  const article = await getArticleBySlug(slug);
   if (!article) notFound();
-  const related = getRelatedArticles(slug);
+  const related = await getRelatedArticles(slug);
 
   return (
     <>

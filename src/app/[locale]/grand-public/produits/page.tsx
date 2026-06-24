@@ -23,7 +23,7 @@ export default async function GrandPublicCataloguePage({
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
   const dict = getDictionary(locale);
-  const products = getAllProducts("grand-public");
+  const products = await getAllProducts("grand-public");
 
   return (
     <Section>

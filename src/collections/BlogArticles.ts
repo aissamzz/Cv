@@ -58,7 +58,6 @@ export const BlogArticles: CollectionConfig = {
       name: "coverImage",
       type: "upload",
       relationTo: "media",
-      required: true,
     },
     {
       name: "readingTimeMinutes",

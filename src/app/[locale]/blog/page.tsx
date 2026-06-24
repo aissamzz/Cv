@@ -23,7 +23,7 @@ export default async function BlogPage({
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
   const dict = getDictionary(locale);
-  const articles = getAllArticles();
+  const articles = await getAllArticles();
 
   return (
     <Section>
