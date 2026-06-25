@@ -1,9 +1,9 @@
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
-import { sectors } from "@/data/sectors";
+import { getAllSectors } from "@/lib/getSector";
 import type { Dictionary } from "@/i18n/dictionaries";
 
-export function ProductFilterBar({
+export async function ProductFilterBar({
   basePath,
   activeSector,
   dict,
@@ -12,6 +12,7 @@ export function ProductFilterBar({
   activeSector?: string;
   dict: Dictionary;
 }) {
+  const sectors = await getAllSectors();
   return (
     <div className="flex flex-wrap gap-2">
       <Link

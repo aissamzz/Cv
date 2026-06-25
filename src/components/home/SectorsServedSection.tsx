@@ -1,10 +1,11 @@
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Link } from "@/i18n/navigation";
-import { sectors } from "@/data/sectors";
+import { getAllSectors } from "@/lib/getSector";
 import { sectorIcons } from "@/lib/sector-icons";
 
-export function SectorsServedSection() {
+export async function SectorsServedSection() {
+  const sectors = await getAllSectors();
   return (
     <Section>
       <SectionHeading

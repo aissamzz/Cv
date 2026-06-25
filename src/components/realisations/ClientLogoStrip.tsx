@@ -1,6 +1,7 @@
-import { caseStudies } from "@/data/case-studies";
+import { getAllCaseStudies } from "@/lib/getCaseStudy";
 
-export function ClientLogoStrip() {
+export async function ClientLogoStrip() {
+  const caseStudies = await getAllCaseStudies();
   const clients = Array.from(new Set(caseStudies.map((caseStudy) => caseStudy.clientName)));
 
   return (

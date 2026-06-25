@@ -1,10 +1,11 @@
 import { Calendar } from "lucide-react";
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { companyNews } from "@/data/company-news";
+import { getAllNewsItems } from "@/lib/getNewsItem";
 import { formatDate } from "@/lib/utils";
 
-export function NewsSection() {
+export async function NewsSection() {
+  const companyNews = await getAllNewsItems();
   return (
     <Section tone="dark">
       <SectionHeading eyebrow="Actualités" title="Ce qui se passe chez CIEL VERT" light />

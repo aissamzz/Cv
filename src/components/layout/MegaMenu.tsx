@@ -1,9 +1,17 @@
 import { Link } from "@/i18n/navigation";
 import type { NavItem } from "@/lib/navigation";
 import type { Dictionary } from "@/i18n/dictionaries";
-import { sectors } from "@/data/sectors";
+import type { Sector } from "@/data/types";
 
-export function MegaMenu({ item, dict }: { item: NavItem; dict: Dictionary }) {
+export function MegaMenu({
+  item,
+  dict,
+  sectors,
+}: {
+  item: NavItem;
+  dict: Dictionary;
+  sectors: Sector[];
+}) {
   if (!item.megaMenu) return null;
 
   return (

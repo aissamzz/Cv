@@ -1,14 +1,14 @@
 import { Quote } from "lucide-react";
 import { Tag } from "@/components/ui/Tag";
 import { BeforeAfterSlider } from "./BeforeAfterSlider";
-import { getSectorBySlug } from "@/data/sectors";
-import { testimonials } from "@/data/testimonials";
+import { getSectorBySlug } from "@/lib/getSector";
+import { getTestimonialById } from "@/lib/getTestimonial";
 import type { CaseStudy } from "@/data/types";
 
-export function CaseStudyCard({ caseStudy }: { caseStudy: CaseStudy }) {
-  const sector = getSectorBySlug(caseStudy.sector);
+export async function CaseStudyCard({ caseStudy }: { caseStudy: CaseStudy }) {
+  const sector = await getSectorBySlug(caseStudy.sector);
   const testimonial = caseStudy.testimonialId
-    ? testimonials.find((item) => item.id === caseStudy.testimonialId)
+    ? await getTestimonialById(caseStudy.testimonialId)
     : undefined;
 
   return (

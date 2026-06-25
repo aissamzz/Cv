@@ -1,9 +1,10 @@
 import { Quote } from "lucide-react";
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { testimonials } from "@/data/testimonials";
+import { getAllTestimonials } from "@/lib/getTestimonial";
 
-export function TestimonialsSection() {
+export async function TestimonialsSection() {
+  const testimonials = await getAllTestimonials();
   return (
     <Section>
       <SectionHeading eyebrow="Ils nous font confiance" title="Ce qu'en disent nos clients" align="center" />

@@ -7,7 +7,7 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Container } from "@/components/ui/Container";
 import { CaseStudyCard } from "@/components/realisations/CaseStudyCard";
 import { ClientLogoStrip } from "@/components/realisations/ClientLogoStrip";
-import { caseStudies } from "@/data/case-studies";
+import { getAllCaseStudies } from "@/lib/getCaseStudy";
 import { pageMetadata } from "@/lib/seo";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -25,6 +25,7 @@ export default async function RealisationsPage({
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
   const dict = getDictionary(locale);
+  const caseStudies = await getAllCaseStudies();
 
   return (
     <>

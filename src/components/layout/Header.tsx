@@ -13,8 +13,9 @@ import { useDict } from "@/i18n/locale-context";
 import { stripLocaleFromPathname } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 import type { Dictionary } from "@/i18n/dictionaries";
+import type { Sector } from "@/data/types";
 
-export function Header() {
+export function Header({ sectors }: { sectors: Sector[] }) {
   const dict = useDict();
   const pathname = usePathname();
   const currentPath = stripLocaleFromPathname(pathname);
@@ -53,7 +54,7 @@ export function Header() {
                   {dict.nav[item.key as keyof Dictionary["nav"]]}
                 </Link>
                 {item.megaMenu && openKey === item.key ? (
-                  <MegaMenu item={item} dict={dict} />
+                  <MegaMenu item={item} dict={dict} sectors={sectors} />
                 ) : null}
               </div>
             );

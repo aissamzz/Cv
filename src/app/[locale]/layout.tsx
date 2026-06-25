@@ -6,6 +6,7 @@ import { LocaleProvider } from "@/i18n/locale-context";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { WhatsAppFloatingButton } from "@/components/cta/WhatsAppFloatingButton";
+import { getAllSectors } from "@/lib/getSector";
 import "../globals.css";
 
 export function generateStaticParams() {
@@ -37,12 +38,13 @@ export default async function LocaleLayout({
   if (!isLocale(rawLocale)) notFound();
   const locale: Locale = rawLocale;
   const dict = getDictionary(locale);
+  const sectors = await getAllSectors();
 
   return (
     <html lang={locale} dir={dirForLocale(locale)}>
       <body className="font-sans antialiased">
         <LocaleProvider locale={locale} dict={dict}>
-          <Header />
+          <Header sectors={sectors} />
           <main>{children}</main>
           <Footer dict={dict} />
           <WhatsAppFloatingButton />
