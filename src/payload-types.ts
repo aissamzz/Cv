@@ -76,6 +76,7 @@ export interface Config {
     'library-entries': LibraryEntry;
     'case-studies': CaseStudy;
     'news-items': NewsItem;
+    submissions: Submission;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -92,6 +93,7 @@ export interface Config {
     'library-entries': LibraryEntriesSelect<false> | LibraryEntriesSelect<true>;
     'case-studies': CaseStudiesSelect<false> | CaseStudiesSelect<true>;
     'news-items': NewsItemsSelect<false> | NewsItemsSelect<true>;
+    submissions: SubmissionsSelect<false> | SubmissionsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -338,6 +340,24 @@ export interface NewsItem {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "submissions".
+ */
+export interface Submission {
+  id: number;
+  type: 'quote' | 'quick-contact' | 'contact';
+  requestType?: ('info' | 'devis' | 'partenariat') | null;
+  name: string;
+  email: string;
+  phone?: string | null;
+  company?: string | null;
+  productName?: string | null;
+  message?: string | null;
+  locale?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -395,6 +415,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'news-items';
         value: number | NewsItem;
+      } | null)
+    | ({
+        relationTo: 'submissions';
+        value: number | Submission;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -598,6 +622,23 @@ export interface NewsItemsSelect<T extends boolean = true> {
   title?: T;
   excerpt?: T;
   date?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "submissions_select".
+ */
+export interface SubmissionsSelect<T extends boolean = true> {
+  type?: T;
+  requestType?: T;
+  name?: T;
+  email?: T;
+  phone?: T;
+  company?: T;
+  productName?: T;
+  message?: T;
+  locale?: T;
   updatedAt?: T;
   createdAt?: T;
 }

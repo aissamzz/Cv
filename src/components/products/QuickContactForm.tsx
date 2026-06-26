@@ -3,15 +3,40 @@
 import { useState, type FormEvent } from "react";
 import { CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
+import { useLocale } from "@/i18n/locale-context";
 import type { Dictionary } from "@/i18n/dictionaries";
 
 export function QuickContactForm({ productName, dict }: { productName: string; dict: Dictionary }) {
+  const locale = useLocale();
   const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState(false);
 
-  // TODO: wire to backend
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setSent(true);
+    setSending(true);
+    setError(false);
+    const formData = new FormData(event.currentTarget);
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type: "quick-contact",
+          name: formData.get("name"),
+          email: formData.get("email"),
+          message: formData.get("message"),
+          productName,
+          locale,
+        }),
+      });
+      if (!response.ok) throw new Error("Request failed");
+      setSent(true);
+    } catch {
+      setError(true);
+    } finally {
+      setSending(false);
+    }
   }
 
   if (sent) {
@@ -37,8 +62,9 @@ export function QuickContactForm({ productName, dict }: { productName: string; d
           className="w-full rounded-lg border border-mist-300 px-4 py-2.5 text-sm"
         />
       </div>
-      <Button type="submit" className="mt-4 w-full sm:w-auto">
-        {dict.common.send}
+      {error ? <p className="mt-4 text-sm text-red-600">{dict.common.error}</p> : null}
+      <Button type="submit" disabled={sending} className="mt-4 w-full sm:w-auto">
+        {sending ? dict.common.sending : dict.common.send}
       </Button>
     </form>
   );

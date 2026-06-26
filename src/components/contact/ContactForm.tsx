@@ -3,6 +3,7 @@
 import { useState, type FormEvent } from "react";
 import { CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
+import { useLocale } from "@/i18n/locale-context";
 import { cn } from "@/lib/utils";
 import type { Dictionary } from "@/i18n/dictionaries";
 
@@ -15,8 +16,11 @@ export function ContactForm({
   dict: Dictionary;
   defaultType?: RequestType;
 }) {
+  const locale = useLocale();
   const [requestType, setRequestType] = useState<RequestType>(defaultType);
   const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState(false);
 
   const typeOptions: { value: RequestType; label: string }[] = [
     { value: "info", label: dict.common.infoRequest },
@@ -24,10 +28,33 @@ export function ContactForm({
     { value: "partenariat", label: dict.common.partnershipRequest },
   ];
 
-  // TODO: wire to backend
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setSent(true);
+    setSending(true);
+    setError(false);
+    const formData = new FormData(event.currentTarget);
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type: "contact",
+          requestType,
+          name: formData.get("name"),
+          company: formData.get("company"),
+          email: formData.get("email"),
+          phone: formData.get("phone"),
+          message: formData.get("message"),
+          locale,
+        }),
+      });
+      if (!response.ok) throw new Error("Request failed");
+      setSent(true);
+    } catch {
+      setError(true);
+    } finally {
+      setSending(false);
+    }
   }
 
   if (sent) {
@@ -73,8 +100,9 @@ export function ContactForm({
         rows={5}
         className="mt-4 w-full rounded-lg border border-mist-300 px-4 py-2.5 text-sm"
       />
-      <Button type="submit" className="mt-4 w-full sm:w-auto">
-        {dict.common.send}
+      {error ? <p className="mt-4 text-sm text-red-600">{dict.common.error}</p> : null}
+      <Button type="submit" disabled={sending} className="mt-4 w-full sm:w-auto">
+        {sending ? dict.common.sending : dict.common.send}
       </Button>
     </form>
   );

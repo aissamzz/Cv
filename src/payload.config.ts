@@ -14,6 +14,7 @@ import { BlogArticles } from "./collections/BlogArticles";
 import { LibraryEntries } from "./collections/LibraryEntries";
 import { CaseStudies } from "./collections/CaseStudies";
 import { NewsItems } from "./collections/NewsItems";
+import { Submissions } from "./collections/Submissions";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -35,6 +36,7 @@ export default buildConfig({
     LibraryEntries,
     CaseStudies,
     NewsItems,
+    Submissions,
   ],
   localization: {
     locales: ["fr", "ar"],

@@ -35,6 +35,7 @@
     "send": "Envoyer",
     "sending": "Envoi...",
     "sent": "Votre message a bien été envoyé.",
+    "error": "Une erreur est survenue. Veuillez réessayer.",
     "search": "Rechercher",
     "category": "Catégorie",
     "allCategories": "Toutes les catégories",
